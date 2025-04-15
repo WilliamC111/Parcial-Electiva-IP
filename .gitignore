@@ -1,10 +1,54 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# ========================
+# GENERADO Y PERSONALIZADO PARA VIRTUALCOFFEE
+# SOPORTE: Java, Python, VSCode, IntelliJ, STS, NetBeans, FastAPI
+# ========================
 
-### STS ###
+# -----------------------------------
+# ARCHIVOS Y CARPETAS ESPECÍFICOS DE PYTHON / FASTAPI
+# -----------------------------------
+# Entornos virtuales
+venv/
+env/
+ENV/
+.venv/
+
+# Archivos Python compilados
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Logs y caché
+*.log
+*.tmp
+.cache/
+.pytest_cache/
+coverage/
+
+# Archivos de configuración y datos
+*.env
+*.local
+*.db
+*.sqlite3
+
+# Archivo de persistencia del backend Python
+/Persistence/bebidas.json
+
+# -----------------------------------
+# CONFIGURACIÓN DE IDEs
+# -----------------------------------
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
+
+### Spring Tool Suite (STS) ###
 .apt_generated
 .classpath
 .factorypath
@@ -12,12 +56,6 @@ target/
 .settings
 .springBeans
 .sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
 
 ### NetBeans ###
 /nbproject/private/
@@ -29,5 +67,29 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+# -----------------------------------
+# JAVA Y MAVEN
+# -----------------------------------
+
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# -----------------------------------
+# GENERAL
+# -----------------------------------
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos comprimidos
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Dependencias de Node 
+node_modules/
