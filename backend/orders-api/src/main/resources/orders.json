@@ -1,0 +1,17 @@
+[
+  {
+      "id": "order-001",
+      "items": [
+          {
+              "drinkName": "Latte",
+              "size": "Medium",
+              "quantity": 1,
+              "price": 4.00,
+              "imageUrl": "http://example.com/latte.jpg"
+          }
+      ],
+      "orderDate": "2025-04-14T21:00:00",
+      "status": "COMPLETED",
+      "total": 4.00
+  }
+]
