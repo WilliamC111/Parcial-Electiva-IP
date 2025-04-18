@@ -1,0 +1,17 @@
+<div class="drinks-menu">
+  <h2>Menú de Bebidas</h2>
+  <div class="drinks-grid">
+    <div *ngFor="let drink of drinks" class="drink-card">
+      <img [src]="drink.imageUrl" [alt]="drink.name" class="drink-image">
+      <h3>{{ drink.name }}</h3>
+      
+      <!-- Mostrar los tamaños y precios -->
+      <div class="sizes-container">
+        <div *ngFor="let size of getSizes(drink.availableSizes)" class="size-option">
+          <span class="size-label">{{ size.name }}:</span>
+          <span class="size-price">{{ size.price | currency }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

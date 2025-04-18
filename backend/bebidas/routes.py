@@ -8,11 +8,11 @@ router = APIRouter()
 def listar_menu():
     return obtener_menu()
 
-@router.post("/", summary="Agregar nueva bebida")
+@router.post("/addDrink", summary="Agregar nueva bebida")
 def crear_bebida(bebida: BebidaSchema):
     return agregar_bebida(bebida)
 
-@router.get("/{nombre}", summary="Buscar bebida por nombre")
+@router.get("/search{nombre}", summary="Buscar bebida por nombre")
 def buscar(nombre: str):
     return buscar_bebida(nombre)
 
