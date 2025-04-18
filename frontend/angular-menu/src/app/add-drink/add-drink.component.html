@@ -1,0 +1,23 @@
+<div class="form-container">
+    <h2>Agregar Nueva Bebida</h2>
+    <form (ngSubmit)="onSubmit()">
+      <input [(ngModel)]="newDrink.name" name="name" placeholder="Nombre" required>
+      
+      <div *ngFor="let size of sizes">
+        <label>{{ size }}:</label>
+        <input 
+          type="number" 
+          [(ngModel)]="newDrink.availableSizes[size]" 
+          [name]="size" 
+          step="0.01" 
+          placeholder="Precio" 
+          required
+        >
+      </div>
+  
+      <input [(ngModel)]="newDrink.imageUrl" name="imageUrl" placeholder="URL de la imagen">
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </form>
+  </div>
