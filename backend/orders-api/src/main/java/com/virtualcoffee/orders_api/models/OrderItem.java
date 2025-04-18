@@ -6,7 +6,7 @@ import lombok.Data;
 public class OrderItem {
     private String drinkName;
     private String size;
-    private Integer quantity; // Usar Integer en lugar de int
-    private Double price;    // Usar Double en lugar de double
+    private Integer quantity; 
+    private Double price;   
     private String imageUrl;
 }
