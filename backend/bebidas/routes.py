@@ -8,7 +8,7 @@ router = APIRouter()
 def listar_menu():
     return obtener_menu()
 
-@router.post("/addDrink", summary="Agregar nueva bebida")
+@router.post("/", summary="Agregar nueva bebida")
 def crear_bebida(bebida: BebidaSchema):
     return agregar_bebida(bebida)
 
