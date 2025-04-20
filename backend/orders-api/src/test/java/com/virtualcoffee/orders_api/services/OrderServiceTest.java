@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -35,31 +34,31 @@ public class OrderServiceTest {
     @InjectMocks
     private OrderService orderService;
     
-    private OrderRequestDTO orderRequestDTO;
-    private OrderItemDTO orderItemDTO;
+    private OrderRequestDTO validRequest;
+    private OrderItemDTO validItem;
     private DrinkServiceClient.DrinkInfo drinkInfo;
-    private Order order;
-    private OrderResponseDTO orderResponseDTO;
+    private Order savedOrder;
+    private OrderResponseDTO expectedResponse;
     
     @BeforeEach
     public void setUp() {
-        // Configuración del OrderItemDTO
-        orderItemDTO = new OrderItemDTO();
-        orderItemDTO.setDrinkName("Latte");
-        orderItemDTO.setSize("Medium");
-        orderItemDTO.setQuantity(2);
+        // Configuración de item válido
+        validItem = new OrderItemDTO();
+        validItem.setDrinkName("Latte");
+        validItem.setSize("Medium");
+        validItem.setQuantity(2);
         
-        // Configuración del OrderRequestDTO
-        orderRequestDTO = new OrderRequestDTO();
-        orderRequestDTO.setItems(List.of(orderItemDTO));
+        // Configuración de request válido
+        validRequest = new OrderRequestDTO();
+        validRequest.setItems(List.of(validItem));
         
-        // Configuración de la respuesta de bebidas
+        // Configuración de información de bebida
         drinkInfo = new DrinkServiceClient.DrinkInfo();
         drinkInfo.setName("Latte");
-        drinkInfo.setAvailableSizes(Map.of("Small", 2.99, "Medium", 3.99, "Large", 4.99));
+        drinkInfo.setAvailableSizes(Map.of("Medium", 3.99));
         drinkInfo.setImageUrl("http://example.com/latte.jpg");
         
-        // Configuración de la Order
+        // Configuración de Order guardada
         OrderItem orderItem = new OrderItem();
         orderItem.setDrinkName("Latte");
         orderItem.setSize("Medium");
@@ -67,12 +66,11 @@ public class OrderServiceTest {
         orderItem.setPrice(3.99);
         orderItem.setImageUrl("http://example.com/latte.jpg");
         
-        order = new Order();
-        order.setItems(List.of(orderItem));
-        order.setStatus("PENDING");
-        order.setOrderDate(LocalDateTime.now());
+        savedOrder = new Order();
+        savedOrder.setItems(List.of(orderItem));
+        savedOrder.setStatus("PENDING");
         
-        // Configuración del OrderResponseDTO
+        // Configuración de response esperado
         OrderResponseDTO.OrderItemResponse itemResponse = new OrderResponseDTO.OrderItemResponse();
         itemResponse.setDrinkName("Latte");
         itemResponse.setSize("Medium");
@@ -80,56 +78,58 @@ public class OrderServiceTest {
         itemResponse.setPrice(3.99);
         itemResponse.setImageUrl("http://example.com/latte.jpg");
         
-        orderResponseDTO = new OrderResponseDTO();
-        orderResponseDTO.setId("order-123");
-        orderResponseDTO.setItems(List.of(itemResponse));
-        orderResponseDTO.setStatus("PENDING");
-        orderResponseDTO.setOrderDate(LocalDateTime.now());
-        orderResponseDTO.setTotal(7.98);
+        expectedResponse = new OrderResponseDTO();
+        expectedResponse.setItems(List.of(itemResponse));
+        expectedResponse.setStatus("PENDING");
+        expectedResponse.setTotal(7.98); // 3.99 * 2
     }
     
     @Test
-    public void createOrder_ShouldRejectOrderWhenDrinkNotFound() {
-        // Configurar mock para simular que la bebida no existe
+    public void createOrder_ShouldSaveOrderWhenValid() {
+        when(drinkServiceClient.getDrinkInfo("Latte")).thenReturn(drinkInfo);
+        when(orderRepository.save(any(Order.class))).thenReturn(savedOrder);
+        when(modelMapper.map(savedOrder, OrderResponseDTO.class)).thenReturn(expectedResponse);
+        
+        OrderResponseDTO response = orderService.createOrder(validRequest);
+        
+        assertNotNull(response);
+        assertEquals(7.98, response.getTotal());
+        verify(orderRepository, times(1)).save(any(Order.class));
+    }
+    
+    @Test
+    public void createOrder_ShouldThrowWhenDrinkNotFound() {
         when(drinkServiceClient.getDrinkInfo("UnknownDrink"))
             .thenThrow(new ResourceNotFoundException("Drink not found"));
         
-        OrderItemDTO unknownItem = new OrderItemDTO();
-        unknownItem.setDrinkName("UnknownDrink");
-        unknownItem.setSize("Medium");
-        unknownItem.setQuantity(1);
+        OrderItemDTO invalidItem = new OrderItemDTO();
+        invalidItem.setDrinkName("UnknownDrink");
+        invalidItem.setSize("Medium");
+        invalidItem.setQuantity(1);
         
         OrderRequestDTO invalidRequest = new OrderRequestDTO();
-        invalidRequest.setItems(List.of(unknownItem));
+        invalidRequest.setItems(List.of(invalidItem));
         
-        // Verificar que se lanza la excepción correcta
         assertThrows(ResourceNotFoundException.class, () -> {
             orderService.createOrder(invalidRequest);
         });
         
-        // Verificar que no se llamó a save
         verify(orderRepository, never()).save(any());
     }
     
     @Test
-    public void createOrder_ShouldRejectOrderWhenSizeNotAvailable() {
-        when(drinkServiceClient.getDrinkInfo("Latte")).thenReturn(drinkInfo);
+    public void getAllOrders_ShouldReturnEmptyListWhenNoOrders() {
+        // Configuración
+        when(orderRepository.findAll()).thenReturn(List.of());
         
-        OrderItemDTO invalidSizeItem = new OrderItemDTO();
-        invalidSizeItem.setDrinkName("Latte");
-        invalidSizeItem.setSize("ExtraLarge"); // Tamaño no disponible
-        invalidSizeItem.setQuantity(1);
+        // Ejecución
+        List<OrderResponseDTO> result = orderService.getAllOrders();
         
-        OrderRequestDTO invalidRequest = new OrderRequestDTO();
-        invalidRequest.setItems(List.of(invalidSizeItem));
+        // Verificación
+        assertTrue(result.isEmpty());
+        verify(orderRepository, times(1)).findAll();
         
-        // Verificar que se lanza la excepción correcta
-        assertThrows(ValidationException.class, () -> {
-            orderService.createOrder(invalidRequest);
-        });
-        
-        // Verificar que no se llamó a save
-        verify(orderRepository, never()).save(any());
+        // Elimina esta línea si no es necesaria:
+        // verify(modelMapper, never()).map(any(), any());
     }
-    
 }

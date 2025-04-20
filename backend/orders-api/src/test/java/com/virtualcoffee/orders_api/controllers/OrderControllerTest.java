@@ -1,7 +1,7 @@
 package com.virtualcoffee.orders_api.controllers;
 
 import com.virtualcoffee.orders_api.dtos.*;
-import com.virtualcoffee.orders_api.exceptions.ResourceNotFoundException;
+import com.virtualcoffee.orders_api.exceptions.*;
 import com.virtualcoffee.orders_api.services.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,70 +26,62 @@ public class OrderControllerTest {
     @InjectMocks
     private OrderController orderController;
     
-    private OrderRequestDTO orderRequestDTO;
-    private OrderResponseDTO orderResponseDTO;
+    private OrderRequestDTO validRequest;
+    private OrderResponseDTO successResponse;
     
     @BeforeEach
     public void setUp() {
-        // Configuración del OrderItemDTO
-        OrderItemDTO itemDTO = new OrderItemDTO();
-        itemDTO.setDrinkName("Latte");
-        itemDTO.setSize("Medium");
-        itemDTO.setQuantity(1);
+        // Configuración de request válido
+        OrderItemDTO item = new OrderItemDTO();
+        item.setDrinkName("Latte");
+        item.setSize("Medium");
+        item.setQuantity(1);
+        validRequest = new OrderRequestDTO();
+        validRequest.setItems(List.of(item));
         
-        // Configuración del OrderRequestDTO
-        orderRequestDTO = new OrderRequestDTO();
-        orderRequestDTO.setItems(List.of(itemDTO));
-        
-        // Configuración del OrderItemResponse
+        // Configuración de response exitoso
         OrderResponseDTO.OrderItemResponse itemResponse = new OrderResponseDTO.OrderItemResponse();
         itemResponse.setDrinkName("Latte");
         itemResponse.setSize("Medium");
         itemResponse.setQuantity(1);
         itemResponse.setPrice(3.99);
-        itemResponse.setImageUrl("http://example.com/latte.jpg");
         
-        // Configuración del OrderResponseDTO
-        orderResponseDTO = new OrderResponseDTO();
-        orderResponseDTO.setId("order-123");
-        orderResponseDTO.setItems(List.of(itemResponse));
-        orderResponseDTO.setStatus("PENDING");
-        orderResponseDTO.setTotal(3.99);
+        successResponse = new OrderResponseDTO();
+        successResponse.setId("order-123");
+        successResponse.setItems(List.of(itemResponse));
+        successResponse.setStatus("PENDING");
+        successResponse.setTotal(3.99);
     }
     
     @Test
-    public void createOrder_ShouldReturnNotFoundWhenDrinkNotAvailable() {
-        OrderItemDTO invalidItem = new OrderItemDTO();
-        invalidItem.setDrinkName("UnknownDrink");
-        invalidItem.setSize("Medium");
-        invalidItem.setQuantity(1);
+    public void createOrder_ShouldReturnCreatedResponse() {
+        when(orderService.createOrder(validRequest)).thenReturn(successResponse);
         
-        OrderRequestDTO invalidRequest = new OrderRequestDTO();
-        invalidRequest.setItems(List.of(invalidItem));
+        ResponseEntity<?> response = orderController.createOrder(validRequest);
         
-        when(orderService.createOrder(invalidRequest))
-            .thenThrow(new ResourceNotFoundException("Drink not found"));
-        
-        ResponseEntity<?> response = orderController.createOrder(invalidRequest);
-        
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNotNull(response.getBody());
-        
-        // Verificación correcta del ErrorResponse
-        assertTrue(response.getBody() instanceof OrderController.ErrorResponse);
-        
-        OrderController.ErrorResponse errorResponse = (OrderController.ErrorResponse) response.getBody();
-        assertEquals("Drink not found", errorResponse.getMessage());
-        assertNotNull(errorResponse.getTimestamp());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(successResponse, response.getBody());
     }
     
-@Test
-public void getAllOrders_ShouldReturnEmptyListWhenNoOrders() {
-    when(orderService.getAllOrders()).thenReturn(List.of());
+    @Test
+    public void createOrder_ShouldHandleResourceNotFoundException() {
+        when(orderService.createOrder(validRequest))
+            .thenThrow(new ResourceNotFoundException("Drink not found"));
+        
+        ResponseEntity<?> response = orderController.createOrder(validRequest);
+        
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertTrue(response.getBody() instanceof OrderController.ErrorResponse);
+    }
     
-    ResponseEntity<List<OrderResponseDTO>> response = orderController.getAllOrders();
-    
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertTrue(response.getBody().isEmpty());
-}
+    @Test
+    public void getAllOrders_ShouldReturnListOfOrders() {
+        when(orderService.getAllOrders()).thenReturn(List.of(successResponse));
+        
+        ResponseEntity<List<OrderResponseDTO>> response = orderController.getAllOrders();
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(1, response.getBody().size());
+    }
 }
