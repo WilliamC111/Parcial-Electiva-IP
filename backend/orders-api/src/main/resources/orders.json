@@ -1,17 +1,1 @@
-[
-  {
-      "id": "order-001",
-      "items": [
-          {
-              "drinkName": "Latte",
-              "size": "Medium",
-              "quantity": 1,
-              "price": 4.00,
-              "imageUrl": "http://example.com/latte.jpg"
-          }
-      ],
-      "orderDate": "2025-04-14T21:00:00",
-      "status": "COMPLETED",
-      "total": 4.00
-  }
-]
+[{"id":"order-001","items":[{"drinkName":"Latte","size":"Medium","quantity":1,"price":4.0,"imageUrl":"http://example.com/latte.jpg"}],"orderDate":"2025-04-14T21:00:00","status":"COMPLETED","total":4.0},{"id":"43daa212-b4d5-4f3a-a2c5-d4161e2f574a","items":[{"drinkName":"Cappuccino","size":"Medium","quantity":1,"price":4.0,"imageUrl":"https://www.elespectador.com/resizer/L_d9v6uuxjkcZkONzjrpOAr9Lus=/arc-anglerfish-arc2-prod-elespectador/public/3RLSJX3IBNA55F5OZPNWSLSGQE.jpg"}],"orderDate":"2025-04-22T22:38:01.6824311","status":"PENDING","total":null}]

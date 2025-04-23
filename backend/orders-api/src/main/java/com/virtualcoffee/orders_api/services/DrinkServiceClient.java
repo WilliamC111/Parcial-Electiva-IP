@@ -13,22 +13,22 @@ import lombok.Data;
 public class DrinkServiceClient {
     @Value("${drinks.api.url}")
     private String drinksApiUrl;
-    
+
     private final RestTemplate restTemplate;
-    
+
     public DrinkServiceClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-    
+
     public DrinkInfo getDrinkInfo(String drinkName) {
-        String url = drinksApiUrl + "/menu/" + drinkName;
+        String url = drinksApiUrl + "/menu/search/" + drinkName;
         try {
             return restTemplate.getForObject(url, DrinkInfo.class);
         } catch (Exception e) {
             throw new ExternalServiceException("Drinks API", e.getMessage(), e);
         }
     }
-    
+
     @Data
     public static class DrinkInfo {
         private String name;

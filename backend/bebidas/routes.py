@@ -12,7 +12,7 @@ def listar_menu():
 def crear_bebida(bebida: BebidaSchema):
     return agregar_bebida(bebida)
 
-@router.get("/search{nombre}", summary="Buscar bebida por nombre")
+@router.get("/search/{nombre}", summary="Buscar bebida por nombre")
 def buscar(nombre: str):
     return buscar_bebida(nombre)
 
