@@ -6,6 +6,7 @@
 # -----------------------------------
 # ARCHIVOS Y CARPETAS ESPECÍFICOS DE PYTHON / FASTAPI
 # -----------------------------------
+
 # Entornos virtuales
 venv/
 env/
@@ -25,6 +26,9 @@ __pycache__/
 .cache/
 .pytest_cache/
 coverage/
+htmlcov/
+coverage.txt
+reportes/
 
 # Archivos de configuración y datos
 *.env
@@ -35,12 +39,15 @@ coverage/
 # Archivo de persistencia del backend Python
 /Persistence/bebidas.json
 
+# Archivo de análisis generado
+ANALISIS_ESTATICO.md
+
 # -----------------------------------
 # CONFIGURACIÓN DE IDEs
 # -----------------------------------
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -49,13 +56,13 @@ coverage/
 .vscode/
 
 ### Spring Tool Suite (STS) ###
-.apt_generated
+.apt_generated/
 .classpath
 .factorypath
 .project
-.settings
-.springBeans
-.sts4-cache
+.settings/
+.springBeans/
+.sts4-cache/
 
 ### NetBeans ###
 /nbproject/private/
@@ -91,5 +98,15 @@ Thumbs.db
 *.rar
 *.7z
 
-# Dependencias de Node 
+# Dependencias de Node
 node_modules/
+
+# -----------------------------------
+# OTROS (extra seguridad)
+# -----------------------------------
+
+*.bak
+*.old
+*.swp
+*.swo
+*.swn
