@@ -45,7 +45,8 @@ public class OrderRepositoryImpl implements OrderRepository {
                 String jsonContent = Files.readString(file.toPath());
                 System.out.println("Contenido del archivo: " + jsonContent);
 
-                orders = objectMapper.readValue(file, new TypeReference<List<Order>>() {});
+                orders = objectMapper.readValue(file, new TypeReference<List<Order>>() {
+                });
                 System.out.println("Órdenes cargadas: " + orders.size());
             }
         } catch (Exception e) {
@@ -56,7 +57,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     private void saveToFile() {
         try {
-            objectMapper.writeValue(new File(filePath), orders);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filePath), orders);
         } catch (IOException e) {
             System.err.println("Error guardando órdenes en archivo: " + e.getMessage());
         }

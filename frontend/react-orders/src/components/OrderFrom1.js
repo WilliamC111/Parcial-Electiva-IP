@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './OrderForm.css'; // <-- Importar estilos
 
 function OrderForm({ onOrderSuccess }) {
   const [menu, setMenu] = useState([]);
   const [selectedName, setSelectedName] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
-  const [quantity, setQuantity] = useState(1); // nuevo estado
+  const [quantity, setQuantity] = useState(1);
+  const [selectedItems, setSelectedItems] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -18,41 +20,53 @@ function OrderForm({ onOrderSuccess }) {
   const availableSizes = selectedDrink ? Object.keys(selectedDrink.availableSizes) : [];
   const selectedPrice = selectedDrink?.availableSizes?.[selectedSize] || '';
 
-  const handleSubmit = async (e) => {
+  const handleAddItem = (e) => {
     e.preventDefault();
 
     if (!selectedName || !selectedSize || quantity < 1) {
-      setError('Completa todos los campos y selecciona al menos una unidad.');
+      setError('Completa todos los campos para agregar un item.');
+      return;
+    }
+
+    const newItem = {
+      drinkName: selectedName,
+      size: selectedSize,
+      quantity: quantity
+    };
+
+    setSelectedItems([...selectedItems, newItem]);
+    setSelectedName('');
+    setSelectedSize('');
+    setQuantity(1);
+    setError('');
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (selectedItems.length === 0) {
+      setError('Debes agregar al menos una bebida a la orden.');
       return;
     }
 
     const payload = {
-      items: [
-        {
-          drinkName: selectedName,
-          size: selectedSize,
-          quantity: quantity
-        }
-      ]
+      items: selectedItems
     };
-
-    console.log("Enviando pedido:", payload);
 
     try {
       await axios.post('http://localhost:8081/orders', payload);
-      setSelectedName('');
-      setSelectedSize('');
-      setQuantity(1);
+      setSelectedItems([]);
       setError('');
       onOrderSuccess();
     } catch (err) {
-      setError('Error al hacer el pedido. Verifica los campos.');
+      setError('Error al hacer el pedido. Verifica los datos.');
     }
   };
 
   return (
-    <div>
+    <div className="order-form-container">
       <h2>Hacer un pedido</h2>
+
       <form onSubmit={handleSubmit}>
         <select value={selectedName} onChange={(e) => {
           setSelectedName(e.target.value);
@@ -77,31 +91,39 @@ function OrderForm({ onOrderSuccess }) {
           type="number"
           value={quantity}
           min="1"
-          onChange={(e) => setQuantity(parseInt(e.target.value))}
+          onChange={(e) => {
+            const val = e.target.value;
+            setQuantity(val === '' ? '' : parseInt(val));
+          }}
           placeholder="Cantidad"
-          style={{ marginTop: '0.5rem', width: '60px' }}
         />
 
-        {selectedDrink?.imageUrl && (
-          <div style={{ marginTop: '1rem' }}>
-            <img
-              src={selectedDrink.imageUrl}
-              alt={selectedDrink.name}
-              style={{ width: '150px', borderRadius: '8px' }}
-            />
-          </div>
-        )}
+        <button onClick={handleAddItem}>
+          Agregar bebida
+        </button>
 
-        {selectedPrice && (
-          <p><strong>Precio unitario:</strong> ${selectedPrice.toFixed(2)}</p>
-        )}
+        {/* Lista de bebidas agregadas */}
+        <div>
+          <h3>Bebidas en la orden:</h3>
+          {selectedItems.length === 0 ? (
+            <p>No has agregado bebidas aún.</p>
+          ) : (
+            <ul>
+              {selectedItems.map((item, idx) => (
+                <li key={idx}>
+                  {item.quantity}x {item.drinkName} - {item.size}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
-        <button type="submit" disabled={!selectedName || !selectedSize}>
-          Enviar pedido
+        <button type="submit">
+          Enviar Pedido
         </button>
       </form>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 }

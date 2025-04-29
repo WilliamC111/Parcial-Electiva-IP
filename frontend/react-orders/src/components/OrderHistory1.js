@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './OrderHistory.css'; // <-- Importar los estilos aquí
 
 function OrderHistory({ refreshTrigger }) {
   const [orders, setOrders] = useState([]);
@@ -11,15 +12,29 @@ function OrderHistory({ refreshTrigger }) {
   }, [refreshTrigger]);
 
   return (
-    <div>
+    <div className="order-history-container">
       <h2>Historial de pedidos</h2>
-      <ul>
-        {orders.map((order, idx) => (
-          <li key={idx}>
-            {order.name} - {order.size}
-          </li>
-        ))}
-      </ul>
+      {orders.length === 0 ? (
+        <p>No hay pedidos aún.</p>
+      ) : (
+        <ul>
+          {orders.map((order, idx) => (
+            <li key={idx} className="order-card">
+              <strong>Pedido #{idx + 1}</strong> - Fecha: {new Date(order.orderDate).toLocaleString()}
+              <ul className="order-items">
+                {order.items.map((item, itemIdx) => (
+                  <li key={itemIdx}>
+                    {item.quantity}x {item.drinkName} - {item.size}
+                  </li>
+                ))}
+              </ul>
+              <p className="order-total">
+                Total: ${order.total.toFixed(2)} - Estado: {order.status}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

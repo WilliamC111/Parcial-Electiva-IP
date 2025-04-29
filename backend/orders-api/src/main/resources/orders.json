@@ -1,1 +1,61 @@
-[{"id":"order-001","items":[{"drinkName":"Latte","size":"Medium","quantity":1,"price":4.0,"imageUrl":"http://example.com/latte.jpg"}],"orderDate":"2025-04-14T21:00:00","status":"COMPLETED","total":4.0},{"id":"43daa212-b4d5-4f3a-a2c5-d4161e2f574a","items":[{"drinkName":"Cappuccino","size":"Medium","quantity":1,"price":4.0,"imageUrl":"https://www.elespectador.com/resizer/L_d9v6uuxjkcZkONzjrpOAr9Lus=/arc-anglerfish-arc2-prod-elespectador/public/3RLSJX3IBNA55F5OZPNWSLSGQE.jpg"}],"orderDate":"2025-04-22T22:38:01.6824311","status":"PENDING","total":null}]
+[ {
+  "id" : "order-001",
+  "items" : [ {
+    "drinkName" : "Latte",
+    "size" : "Medium",
+    "quantity" : 1,
+    "price" : 4.0,
+    "imageUrl" : "http://example.com/latte.jpg"
+  } ],
+  "orderDate" : "2025-04-14T21:00:00",
+  "status" : "COMPLETED",
+  "total" : 4.0
+}, {
+  "id" : "43daa212-b4d5-4f3a-a2c5-d4161e2f574a",
+  "items" : [ {
+    "drinkName" : "Cappuccino",
+    "size" : "Medium",
+    "quantity" : 1,
+    "price" : 4.0,
+    "imageUrl" : "https://www.elespectador.com/resizer/L_d9v6uuxjkcZkONzjrpOAr9Lus=/arc-anglerfish-arc2-prod-elespectador/public/3RLSJX3IBNA55F5OZPNWSLSGQE.jpg"
+  } ],
+  "orderDate" : "2025-04-22T22:38:01.6824311",
+  "status" : "PENDING",
+  "total" : null
+}, {
+  "id" : "bb5e465a-c0b3-4c36-9435-0f46500f2d3f",
+  "items" : [ {
+    "drinkName" : "Latte Macchiato",
+    "size" : "Small",
+    "quantity" : 3,
+    "price" : 5.0,
+    "imageUrl" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY59bFESuBY99OKqYGaPFDvP73VZw1x00WKA&s"
+  }, {
+    "drinkName" : "Cappuccino",
+    "size" : "Large",
+    "quantity" : 1,
+    "price" : 4.5,
+    "imageUrl" : "https://www.elespectador.com/resizer/L_d9v6uuxjkcZkONzjrpOAr9Lus=/arc-anglerfish-arc2-prod-elespectador/public/3RLSJX3IBNA55F5OZPNWSLSGQE.jpg"
+  } ],
+  "orderDate" : "2025-04-28T20:49:13.7055176",
+  "status" : "PENDING",
+  "total" : null
+}, {
+  "id" : "5317c87f-f366-4e05-af14-85157dc242ee",
+  "items" : [ {
+    "drinkName" : "Cappuccino",
+    "size" : "Small",
+    "quantity" : 2,
+    "price" : 3.5,
+    "imageUrl" : "https://www.elespectador.com/resizer/L_d9v6uuxjkcZkONzjrpOAr9Lus=/arc-anglerfish-arc2-prod-elespectador/public/3RLSJX3IBNA55F5OZPNWSLSGQE.jpg"
+  }, {
+    "drinkName" : "Strawberry Açai",
+    "size" : "Small",
+    "quantity" : 3,
+    "price" : 3000.0,
+    "imageUrl" : "https://www.starbucks.es/sites/starbucks-es-pwa/files/styles/c10_2_col_text_560x467/public/2021-11/Strawberry%20Acai%20Starbucks%20Refresha%C2%AE%20Drink.jpeg.webp?itok=5O64oS5d"
+  } ],
+  "orderDate" : "2025-04-28T21:48:41.6634593",
+  "status" : "PENDING",
+  "total" : null
+} ]

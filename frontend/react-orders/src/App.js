@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import OrderForm from './components/OrderFrom1';
 import OrderHistory from './components/OrderHistory1';
+import './App.css'; // Importar estilos globales
 
 function App() {
   const [refresh, setRefresh] = useState(0);
@@ -10,8 +11,14 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Virtual Coffee - Pedidos</h1>
+  
+    <div>
+    <nav className="navbar">
+      <div className="navbar-brand">VirtualCoffe</div>
+      <ul className="navbar-links">
+        <li><a href="http://localhost:4200/">Menú</a></li>
+      </ul>
+    </nav>
       <OrderForm onOrderSuccess={handleOrderSuccess} />
       <hr />
       <OrderHistory refreshTrigger={refresh} />
