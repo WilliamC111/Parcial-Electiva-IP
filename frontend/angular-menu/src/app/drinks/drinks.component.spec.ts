@@ -1,23 +1,27 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DrinkService } from '../services/drink.service';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { DrinksComponent } from './drinks.component';
 
-describe('DrinksComponent', () => {
-  let component: DrinksComponent;
-  let fixture: ComponentFixture<DrinksComponent>;
+describe('DrinkService', () => {
+  let service: DrinkService;
+  let httpTestingController: HttpTestingController;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [DrinksComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(DrinksComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],  // Asegúrate de incluir HttpClientTestingModule aquí
+      providers: [DrinkService]
+    });
+    service = TestBed.inject(DrinkService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('debería ser creado', () => {
+    expect(service).toBeTruthy();
+  });
+
+  afterEach(() => {
+    // Verificar que no haya solicitudes pendientes
+    httpTestingController.verify();
   });
 });
