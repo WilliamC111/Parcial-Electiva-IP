@@ -15,7 +15,7 @@
 
 - Las válidaciones del areá de Frontend más sencillas se obvian al asumir que el usuario  conoce a la perfección el sistema, lo cúal puede  ocasionar  fallos o respuestas erroneas en el aplicativo
 
-- El diseño inicial y la abstarcción que se realice del proyecto lo es todo tanto a la hora de codificar como en el diseño y desarrollo de las pruebas. 
+- El diseño inicial y la abstracción que se realice del proyecto lo es todo tanto a la hora de codificar como en el diseño y desarrollo de las pruebas. 
 
 ## 📚 Mejores Prácticas
 
@@ -32,11 +32,12 @@ flexibilidad en la configuración de los servicios
 
 - La sincronización de datos entre diferentes servicios es **un desafío clave** aún más cuando se intenta modularizar el sistema hasta donde sea posible
 
-- cada parte de backend apuntaba hacia frontend diferentes
 
 - Las pruebas de Api´s cruzdas representaron un reto para el grupo de trabajo por el
 contraste de datos y el tipo de información que se pasaba en cada endpoint
 
 - La redirección entre los dos frontends fue un reto en cuanto a integración ya que comunmente se habia estado realizando en una unica tecnologia en su totalidad
 
+- El uso de herramientas como cucumber en un proyecto más robusto requería una mayor
+comprensión de las herramientas y su integración con el entorno de desarrollo
 
