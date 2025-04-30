@@ -5,7 +5,6 @@ import json
 import uuid
 import time
 
-# === Configuración de rutas ===
 API_PYTHON_BEBIDAS = "http://localhost:8000/menu"
 API_JAVA_ORDERS = "http://localhost:8081/orders"
 

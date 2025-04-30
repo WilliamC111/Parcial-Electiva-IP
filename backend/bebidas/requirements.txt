@@ -1,6 +1,8 @@
 fastapi
 uvicorn
 pydantic
+pytest
+pytest-cov
 pylint
 mypy
-pytest-cov
+requests

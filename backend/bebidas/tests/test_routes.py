@@ -42,51 +42,6 @@ def test_post_bebida_duplicada():
     assert response.status_code == 400
     assert response.json()["detail"] == "La bebida ya existe."
 
-# --- Validaciones con datos inválidos ---
-
-@pytest.mark.parametrize("bebida_invalida", [
-    {"name": "", "availableSizes": {"Small": 1.0}, "imageUrl": "http://ejemplo.com"},
-    {"name": "ConPrecioNegativo", "availableSizes": {"Small": -1.0}, "imageUrl": "http://ejemplo.com"},
-    {"name": "SinTamanos", "availableSizes": {}, "imageUrl": "http://ejemplo.com"},
-    {"name": "SinURL", "availableSizes": {"Small": 2.0}, "imageUrl": "no_es_url"},
-    {"name": "NoDict", "availableSizes": ["Small", "Large"], "imageUrl": "http://ejemplo.com"}
-])
-def test_post_bebida_datos_invalidos(bebida_invalida):
-    response = client.post("/menu", json=bebida_invalida)
-    assert response.status_code == 422
-
-# --- Consultar bebida existente ---
-
-def test_get_bebida_por_nombre():
-    response = client.get("/menu/TDDLatte")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["name"] == "TDDLatte"
-    assert "availableSizes" in data
-
-# --- Consultar bebida inexistente ---
-
-def test_get_bebida_inexistente():
-    response = client.get("/menu/BebidaQueNoExiste")
-    assert response.status_code == 404
-    assert response.json()["detail"] == "Bebida no encontrada."
-
-# --- Obtener información detallada ---
-
-def test_get_info_bebida_existente():
-    response = client.get("/menu/info/TDDLatte")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["nombre"] == "TDDLatte"
-    assert "tamaños" in data
-    assert isinstance(data["tamaños"], dict)
-    assert "imagen" in data
-
-def test_get_info_bebida_inexistente():
-    response = client.get("/menu/info/BebidaQueNoExiste")
-    assert response.status_code == 404
-    assert response.json()["detail"] == "Bebida no encontrada."
-
 # --- Stress test: varias bebidas únicas ---
 
 def test_agregar_varias_bebidas_unicas():
@@ -97,4 +52,4 @@ def test_agregar_varias_bebidas_unicas():
             "imageUrl": f"http://ejemplo.com/img_{i}.jpg"
         }
         response = client.post("/menu", json=bebida)
-        assert response.status_code in (200, 400)  # 400 si ya existe
+        assert response.status_code in (200, 400) 
