@@ -11,7 +11,7 @@ API_JAVA_ORDERS = "http://localhost:8081/orders"
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 BEBIDAS_PATH = ROOT_DIR / "Persistence" / "bebidas.json"
-ORDERS_PATH = ROOT_DIR / "orders-api" / "src" / "main" / "resources" / "orders.json"
+ORDERS_PATH = ROOT_DIR / "orders-api" / "src" / "main" / "resources" / "Orders.json"
 
 def pedido_fue_guardado(pedido_id):
     if not ORDERS_PATH.exists():
